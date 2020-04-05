@@ -21,11 +21,22 @@ export class CardCanvasComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    window.addEventListener('contextmenu', (evt: MouseEvent) => {
+      event.preventDefault();
+      console.log('from window');
+      if(this.contextMenuTrigger.menuOpen) {
+        this.contextMenuTrigger.closeMenu();
+        setTimeout(() => {
+          this.canvasRightClickHandler(evt);
+        }, 200);
+      }
+    })
   }
 
   canvasRightClickHandler(event: MouseEvent) {
     console.log(event);
     event.preventDefault();
+    event.stopPropagation();
     this.contextMenuPosition.x = event.clientX + 'px';
     this.contextMenuPosition.y = event.clientY + 'px';
     //this.contextMenuTrigger.menu.focusFirstItem('mouse');
