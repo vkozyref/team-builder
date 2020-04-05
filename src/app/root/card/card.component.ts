@@ -11,9 +11,15 @@ export class CardComponent implements OnInit {
   @Input()
   metadata: CardMetadata;
 
+  editMode = false;
+
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  enterEditMode(): void {
+    this.editMode = true;
   }
 
 }

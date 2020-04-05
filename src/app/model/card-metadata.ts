@@ -1,4 +1,4 @@
 export interface CardMetadata {
     text: string;
-    position: { x: number; y: number; }
+    position: { x: string; y: string; }
   }

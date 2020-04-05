@@ -1,9 +1,8 @@
 <div class="tb-canvas" (contextmenu)="canvasRightClickHandler($event)">
     <tb-card *ngFor="let card of cards" [metadata]="card"></tb-card>
-    <div class="tb-canvas-context-menu-trigger" [style.left]="contextMenuPosition.x" [style.top]="contextMenuPosition.y" [matMenuTriggerFor]="appMenu"></div>
 </div>
+<div class="tb-canvas-context-menu-trigger" [style.left]="contextMenuPosition.x" [style.top]="contextMenuPosition.y" [matMenuTriggerFor]="appMenu"></div>
 <mat-menu #appMenu="matMenu">
-    <button mat-menu-item>Settings</button>
-    <button mat-menu-item>Help</button>
+    <button (click)="addCard()" mat-menu-item>Add Card</button>
 </mat-menu>
 
