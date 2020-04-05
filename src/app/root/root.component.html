@@ -1,2 +1,2 @@
 <p>root works!</p>
-<tb-card-canvas [cards]="cards" (onCardAdded)="addCard($event)"></tb-card-canvas>
+<tb-card-canvas [cards]="cards$ | async" (onCanvasEvent)="canvasHandler($event)" (onCardEvent)="cardHandler($event)"></tb-card-canvas>

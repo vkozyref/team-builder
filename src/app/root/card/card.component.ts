@@ -1,7 +1,9 @@
-import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
-import { CardMetadata } from 'src/app/model/card-metadata';
+import { Component, OnInit, Input, ChangeDetectorRef, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { DragRef, CdkDragMove } from '@angular/cdk/drag-drop';
 import { Point } from '@angular/cdk/drag-drop/drag-ref';
+import { CardMetadata } from 'src/app/model/card-metadata';
+import { CardEventType, CardEvent } from 'src/app/model/card-event';
+
 
 @Component({
   selector: 'tb-card',
@@ -16,16 +18,35 @@ export class CardComponent implements OnInit {
   @Input()
   positionFunction;
 
+  @Output()
+  onCardOperation = new EventEmitter<CardEvent>();
 
-  editMode = false;
+  @ViewChild("textInput") inputElement: ElementRef;
 
   constructor(public ref: ChangeDetectorRef) { }
 
   ngOnInit(): void {
+    if(this.metadata.editable) {
+      setTimeout(() => {
+        this.inputElement.nativeElement.focus();
+      });
+    }
   }
 
-  enterEditMode(): void {
-    this.editMode = true;
+  cardClickHandler(event: MouseEvent): void {
+    event.stopPropagation();
+    this.onCardOperation.emit({
+      cardId: this.metadata.id,
+      cardEventType: CardEventType.Click
+    });
+  }
+
+  textChangeHandler(event: string) : void {
+    this.onCardOperation.emit(<CardEvent>{
+      cardId: this.metadata.id,
+      cardEventType: CardEventType.TextChange,
+      text: event
+    });
   }
 
   // moved(event: CdkDragMove) {
@@ -68,3 +89,5 @@ export class CardComponent implements OnInit {
     return modelPosition as Point;
   }
 }
+
+

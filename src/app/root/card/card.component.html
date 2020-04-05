@@ -5,12 +5,14 @@
   cdkDrag
   [cdkDragConstrainPosition]="constrainPosition.bind(this)"
   [style.left]="metadata.position.x"
-  [style.top]="metadata.position.y"
->
-
-<!-- (cdkDragMoved)="moved($event)" -->
-  <p *ngIf="!editMode">{{ metadata.text }}</p>
-  <textarea class="card-text-editor" *ngIf="editMode">{{
-    metadata.text
-  }}</textarea>
+  [style.top]="metadata.position.y">
+  <p *ngIf="!metadata.editable">{{metadata.text}}</p>
+  <textarea 
+    #textInput 
+    class="card-text-editor" 
+    [ngModel]="metadata.text" 
+    (ngModelChange)="textChangeHandler($event)" 
+    *ngIf="metadata.editable">
+  </textarea>
 </div>
+

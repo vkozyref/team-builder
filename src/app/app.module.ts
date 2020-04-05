@@ -11,6 +11,7 @@ import { MenuComponent } from './root/menu/menu.component';
 import { CardCanvasComponent } from './root/card-canvas/card-canvas.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { Ng2PanZoomModule } from 'ng2-panzoom';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { Ng2PanZoomModule } from 'ng2-panzoom';
     BrowserAnimationsModule,
     DragDropModule,
     MatMenuModule,
-    Ng2PanZoomModule
+    Ng2PanZoomModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [RootComponent]

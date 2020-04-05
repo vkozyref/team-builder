@@ -2,7 +2,8 @@ import { Component, OnInit, Input, OnDestroy, ViewChild, Output, EventEmitter } 
 import { CardMetadata } from 'src/app/model/card-metadata';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { PanZoomConfig, PanZoomAPI } from 'ng2-panzoom';
-
+import { CardEvent } from 'src/app/model/card-event';
+import { CanvasEvent, CanvasEventType, CardAddedEvent } from 'src/app/model/canvas-event';
 
 @Component({
   selector: 'tb-card-canvas',
@@ -14,7 +15,10 @@ export class CardCanvasComponent implements OnInit, OnDestroy {
   cards: CardMetadata[];
 
   @Output()
-  onCardAdded = new EventEmitter<CardMetadata>(); 
+  onCardEvent = new EventEmitter<CardEvent>();
+
+  @Output()
+  onCanvasEvent = new EventEmitter<CanvasEvent>();
 
 
   @ViewChild(MatMenuTrigger)
@@ -44,9 +48,11 @@ export class CardCanvasComponent implements OnInit, OnDestroy {
 
   addCard() {
     console.log('card', this.cardPosition);
-    this.onCardAdded.emit({
-      text: '',
+   
+    this.onCanvasEvent.emit(<CardAddedEvent>{
+      canvasEventType: CanvasEventType.AddCard,
       position: {...this.cardPosition}
+      // position: {...this.contextMenuPosition}
     });
   }
 
@@ -54,9 +60,7 @@ export class CardCanvasComponent implements OnInit, OnDestroy {
     console.log(event);
     event.preventDefault();
     event.stopPropagation();
-
-    console.log('event.clientX, event.clientY', event.clientX, event.clientY);
-
+    this.onCanvasEvent.emit(<CanvasEvent>{canvasEventType: CanvasEventType.RightClick, event});
     this.contextMenuPosition.x = event.clientX + 'px';
     this.contextMenuPosition.y = event.clientY + 'px';
 
@@ -70,6 +74,14 @@ export class CardCanvasComponent implements OnInit, OnDestroy {
     this.cardPosition.y = modelPosition.y + 'px';
     this.contextMenuTrigger.menu.focusFirstItem('mouse');
     this.contextMenuTrigger.openMenu();
+  }
+
+  cardHandler(cardEvent: CardEvent) {
+    this.onCardEvent.emit(cardEvent);
+  }
+
+  canvasClickHandler(event: MouseEvent) {
+    this.onCanvasEvent.emit(<CanvasEvent>{canvasEventType: CanvasEventType.Click, event});
   }
 
   ngOnDestroy(): void {
