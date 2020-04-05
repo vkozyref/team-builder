@@ -60,8 +60,7 @@ export class CardCanvasComponent implements OnInit, OnDestroy {
 
   private GetConfig() {
     const config = new PanZoomConfig();
-    config.zoomLevels = 10;
-    config.zoomToFitZoomLevelFactor = 0.65;
+    config.freeMouseWheelFactor = 0.001;
     return config;
   }
 }
