@@ -1,7 +1,10 @@
 .tb-canvas {
     border: 2px solid red;
     position: absolute;
-    padding: 30px;
+    top: 100px;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
 
 .tb-canvas-context-menu-trigger {
