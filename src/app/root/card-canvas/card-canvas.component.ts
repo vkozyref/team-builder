@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, OnDestroy, ViewChild, Output, EventEmitter } from '@angular/core';
 import { CardMetadata } from 'src/app/model/card-metadata';
 import { MatMenuTrigger } from '@angular/material/menu';
+import { PanZoomConfig } from 'ng2-panzoom';
 
 
 @Component({
@@ -9,32 +10,32 @@ import { MatMenuTrigger } from '@angular/material/menu';
   styleUrls: ['./card-canvas.component.scss']
 })
 export class CardCanvasComponent implements OnInit, OnDestroy {
-
   @Input()
   cards: CardMetadata[];
+
   @Output()
   onCardAdded = new EventEmitter<CardMetadata>(); 
 
-  contextMenuPosition = { x: '0px', y: '0px' };
 
-  @ViewChild(MatMenuTrigger) contextMenuTrigger: MatMenuTrigger;
+  @ViewChild(MatMenuTrigger)
+  contextMenuTrigger: MatMenuTrigger;
+
+  contextMenuPosition = { x: '0px', y: '0px' };
+  panZoomConfig = this.GetConfig();
 
   constructor() { }
-
-  ngOnDestroy(): void {
-  }
 
   ngOnInit(): void {
     window.addEventListener('contextmenu', (evt: MouseEvent) => {
       event.preventDefault();
       console.log('from window');
-      if(this.contextMenuTrigger.menuOpen) {
+      if (this.contextMenuTrigger.menuOpen) {
         this.contextMenuTrigger.closeMenu();
         setTimeout(() => {
           this.canvasRightClickHandler(evt);
         }, 200);
       }
-    })
+    });
   }
 
   addCard() {
@@ -54,4 +55,13 @@ export class CardCanvasComponent implements OnInit, OnDestroy {
     this.contextMenuTrigger.openMenu();
   }
 
+  ngOnDestroy(): void {
+  }
+
+  private GetConfig() {
+    const config = new PanZoomConfig();
+    config.zoomLevels = 10;
+    config.zoomToFitZoomLevelFactor = 0.65;
+    return config;
+  }
 }

@@ -1,8 +1,18 @@
 <div class="tb-canvas" (contextmenu)="canvasRightClickHandler($event)">
+  <pan-zoom [config]="panZoomConfig">
     <tb-card *ngFor="let card of cards" [metadata]="card"></tb-card>
-</div>
-<div class="tb-canvas-context-menu-trigger" [style.left]="contextMenuPosition.x" [style.top]="contextMenuPosition.y" [matMenuTriggerFor]="appMenu"></div>
-<mat-menu #appMenu="matMenu">
-    <button (click)="addCard()" mat-menu-item>Add Card</button>
-</mat-menu>
 
+    <div
+      class="tb-canvas-context-menu-trigger"
+      [style.left]="contextMenuPosition.x"
+      [style.top]="contextMenuPosition.y"
+      [matMenuTriggerFor]="appMenu"
+    ></div>
+
+    test
+  </pan-zoom>
+</div>
+
+<mat-menu #appMenu="matMenu">
+  <button (click)="addCard()" mat-menu-item>Add Card</button>
+</mat-menu>

@@ -10,6 +10,7 @@ import { HeaderComponent } from './root/header/header.component';
 import { MenuComponent } from './root/menu/menu.component';
 import { CardCanvasComponent } from './root/card-canvas/card-canvas.component';
 import { MatMenuModule } from '@angular/material/menu';
+import { Ng2PanZoomModule } from 'ng2-panzoom';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { MatMenuModule } from '@angular/material/menu';
     AppRoutingModule,
     BrowserAnimationsModule,
     DragDropModule,
-    MatMenuModule
+    MatMenuModule,
+    Ng2PanZoomModule
   ],
   providers: [],
   bootstrap: [RootComponent]
