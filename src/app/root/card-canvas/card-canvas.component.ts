@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, OnDestroy, ViewChild, Output, EventEmitter } from '@angular/core';
 import { CardMetadata } from 'src/app/model/card-metadata';
 import { MatMenuTrigger } from '@angular/material/menu';
-import { PanZoomConfig } from 'ng2-panzoom';
+import { PanZoomConfig, PanZoomAPI } from 'ng2-panzoom';
 
 
 @Component({
@@ -21,11 +21,15 @@ export class CardCanvasComponent implements OnInit, OnDestroy {
   contextMenuTrigger: MatMenuTrigger;
 
   contextMenuPosition = { x: '0px', y: '0px' };
+  cardPosition = { x: '0px', y: '0px' };
   panZoomConfig = this.GetConfig();
+  panZoomAPI: PanZoomAPI;
 
   constructor() { }
 
   ngOnInit(): void {
+    this.panZoomConfig.api.subscribe((api: PanZoomAPI) => this.panZoomAPI = api);
+
     window.addEventListener('contextmenu', (evt: MouseEvent) => {
       event.preventDefault();
       console.log('from window');
@@ -39,9 +43,10 @@ export class CardCanvasComponent implements OnInit, OnDestroy {
   }
 
   addCard() {
+    console.log('card', this.cardPosition);
     this.onCardAdded.emit({
       text: '',
-      position: {...this.contextMenuPosition}
+      position: {...this.cardPosition}
     });
   }
 
@@ -49,8 +54,20 @@ export class CardCanvasComponent implements OnInit, OnDestroy {
     console.log(event);
     event.preventDefault();
     event.stopPropagation();
+
+    console.log('event.clientX, event.clientY', event.clientX, event.clientY);
+
     this.contextMenuPosition.x = event.clientX + 'px';
     this.contextMenuPosition.y = event.clientY + 'px';
+
+    const modelPosition = this.panZoomAPI.getModelPosition({
+      x: event.clientX - 50,
+      y: event.clientY - 100
+    });
+    console.log('modelPosition', modelPosition);
+
+    this.cardPosition.x = modelPosition.x + 'px';
+    this.cardPosition.y = modelPosition.y + 'px';
     this.contextMenuTrigger.menu.focusFirstItem('mouse');
     this.contextMenuTrigger.openMenu();
   }

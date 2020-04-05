@@ -1,4 +1,16 @@
-<div class="example-box" (click)="enterEditMode()" cdkDrag [style.left]="metadata.position.x" [style.top]="metadata.position.y">
-  <p *ngIf="!editMode">{{metadata.text}}</p>
-  <textarea class="card-text-editor" *ngIf="editMode">{{metadata.text}}</textarea>
+<div
+  #dragRef
+  class="example-box"
+  (click)="enterEditMode()"
+  cdkDrag
+  [cdkDragConstrainPosition]="constrainPosition.bind(this)"
+  [style.left]="metadata.position.x"
+  [style.top]="metadata.position.y"
+>
+
+<!-- (cdkDragMoved)="moved($event)" -->
+  <p *ngIf="!editMode">{{ metadata.text }}</p>
+  <textarea class="card-text-editor" *ngIf="editMode">{{
+    metadata.text
+  }}</textarea>
 </div>
